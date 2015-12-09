@@ -1,8 +1,8 @@
 local nn = require 'nanomsg'
 
-local s = nn.socket(nn.AF_SP, nn.SUB)
+local s = nn.socket(nn.AF_SP, nn.NN_SUB)
 
-if s:setsockopt(nn.SUB, nn.SUB_SUBSCRIBE, 'foo') == false then
+if s:setsockopt(nn.NN_SUB, nn.NN_SUB_SUBSCRIBE, 'foo') == false then
 	print(nn.strerror())
 end
 
