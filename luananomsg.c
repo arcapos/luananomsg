@@ -92,7 +92,7 @@ static int
 luann_getsockopt(lua_State *L)
 {
 	int *s, level, option, rc, int_optval;
-	const char *str_optval;
+	char str_optval[256];
 	size_t optvallen;
 
 	s = luaL_checkudata(L, 1, NN_SOCKET_METATABLE);
@@ -103,24 +103,22 @@ luann_getsockopt(lua_State *L)
 	case NN_SOCKET_NAME:
 	case NN_SUB_SUBSCRIBE:
 	case NN_SUB_UNSUBSCRIBE:
-		str_optval = luaL_checklstring(L, 4, &optvallen);
-		rc = nn_getsockopt(*s, level, option, &str_optval, &optvallen);
-		lua_pushboolean(L, rc == 0);
+		optvallen = sizeof(str_optval);
+		rc = nn_getsockopt(*s, level, option, str_optval, &optvallen);
 		if (!rc)
 			lua_pushlstring(L, str_optval, optvallen);
 		else
 			lua_pushnil(L);
 		break;
 	default:
-		int_optval = luaL_checkinteger(L, 4);
+		optvallen = sizeof(int);
 		rc = nn_getsockopt(*s, level, option, &int_optval, &optvallen);
-		lua_pushboolean(L, rc == 0);
 		if (!rc)
 			lua_pushinteger(L, int_optval);
 		else
 			lua_pushnil(L);
 	}
-	return 2;
+	return 1;
 }
 
 static int
@@ -258,7 +256,7 @@ luann_set_info(lua_State *L)
 	lua_pushliteral(L, "nanomsg for Lua");
 	lua_settable(L, -3);
 	lua_pushliteral(L, "_VERSION");
-	lua_pushliteral(L, "nanomsg 1.0.0");
+	lua_pushliteral(L, "nanomsg 1.0.1");
 	lua_settable(L, -3);
 }
 int
