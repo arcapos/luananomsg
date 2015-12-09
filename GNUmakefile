@@ -1,4 +1,4 @@
-SRCS=		constants.c luananomsg.c
+SRCS=		luananomsg.c
 LIB=		nanomsg
 
 LUAVER=		$(shell lua -v 2>&1 | cut -c 5-7)

@@ -281,7 +281,8 @@ luaopen_nanomsg(lua_State *L)
 		{ "recv",		luann_recv },
 		{ NULL,			NULL }
 	};
-	int n;
+	int n, value;
+	const char *name;
 
 #if LUA_VERSION_NUM >= 502
 	luaL_newlib(L, functions);
@@ -308,9 +309,11 @@ luaopen_nanomsg(lua_State *L)
 	}
 	lua_pop(L, 1);
 
-        for (n = 0; n < num_nn_int(); n++) {
-                lua_pushinteger(L, nn_int[n].value);
-                lua_setfield(L, -2, nn_int[n].name);
+        for (n = 0; ; n++) {
+        	if ((name = nn_symbol(n, &value)) == NULL)
+        		break;
+                lua_pushinteger(L, value);
+                lua_setfield(L, -2, name);
         };
         luann_set_info(L);
 	return 1;

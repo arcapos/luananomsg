@@ -1,4 +1,4 @@
-SRCS=		constants.c luananomsg.c
+SRCS=		luananomsg.c
 LIB=		nanomsg
 
 OS!=		uname
