@@ -259,6 +259,7 @@ luann_set_info(lua_State *L)
 	lua_pushliteral(L, "nanomsg 1.0.1");
 	lua_settable(L, -3);
 }
+
 int
 luaopen_nanomsg(lua_State *L)
 {
