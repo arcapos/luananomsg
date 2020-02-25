@@ -285,17 +285,9 @@ luaopen_nanomsg(lua_State *L)
 	int n, value;
 	const char *name;
 
-#if LUA_VERSION_NUM >= 502
 	luaL_newlib(L, functions);
-#else
-	luaL_register(L, "nanomsg", functions);
-#endif
 	if (luaL_newmetatable(L, NN_SOCKET_METATABLE)) {
-#if LUA_VERSION_NUM >= 502
 		luaL_setfuncs(L, socket_methods, 0);
-#else
-		luaL_register(L, NULL, socket_methods);
-#endif
 		lua_pushliteral(L, "__gc");
 		lua_pushcfunction(L, luann_close);
 		lua_settable(L, -3);
